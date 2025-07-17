@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Filter } from 'lucide-react';
 import { Caregiver, Skill } from '../data/mockData';
 import { getCaregivers, getSkills } from '../services/dataService';
@@ -7,8 +7,10 @@ import CaregiverCard from '../components/UI/CaregiverCard';
 const CaregiversPage: React.FC = () => {
   const [selectedSkill, setSelectedSkill] = useState<string>('all');
   const [filteredCaregivers, setFilteredCaregivers] = useState<Caregiver[]>([]);
-  const caregivers: Caregiver[] = getCaregivers();
-  const skills: Skill[] = getSkills();
+
+  // Memoize caregivers and skills to ensure stable references
+  const caregivers: Caregiver[] = useMemo(() => getCaregivers(), []);
+  const skills: Skill[] = useMemo(() => getSkills(), []);
 
   useEffect(() => {
     if (selectedSkill === 'all') {

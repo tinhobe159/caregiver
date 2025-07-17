@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Calendar, Clock, DollarSign, User, Heart, CheckCircle, X } from 'lucide-react';
 import { Service, Caregiver, Package, PackageService } from '../data/mockData';
@@ -25,10 +25,12 @@ const BookingPage: React.FC = () => {
     notes: ''
   });
 
-  const packages: Package[] = getPackages();
-  const services: Service[] = getServices();
-  const packageServices: PackageService[] = getPackageServices();
-  const caregivers: Caregiver[] = getCaregivers();
+  // Memoize data to ensure stable references
+  const packages: Package[] = useMemo(() => getPackages(), []);
+  const services: Service[] = useMemo(() => getServices(), []);
+  const packageServices: PackageService[] = useMemo(() => getPackageServices(), []);
+  const caregivers: Caregiver[] = useMemo(() => getCaregivers(), []);
+
   const selectedPackage = packages.find(p => p.id === formData.packageId);
   const selectedCaregiver = caregivers.find(c => c.id === formData.caregiverId);
 
