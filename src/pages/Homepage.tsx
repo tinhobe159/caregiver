@@ -1,11 +1,11 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight, Heart, Shield, Clock } from 'lucide-react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { API_BASE_URL } from '../api/config';
-import PackageCard from '../components/UI/PackageCard';
+import React from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight, Heart, Shield, Clock } from "lucide-react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { API_BASE_URL } from "../api/config";
+import PackageCard from "../components/UI/PackageCard";
 
 const Homepage: React.FC = () => {
   const [packages, setPackages] = useState<any[]>([]);
@@ -17,8 +17,8 @@ const Homepage: React.FC = () => {
         const response = await axios.get(`${API_BASE_URL}/packages`);
         setPackages(response.data);
       } catch (error) {
-        console.error('Error fetching packages:', error);
-        toast.error('Failed to load packages');
+        console.error("Error fetching packages:", error);
+        toast.error("Failed to load packages");
       } finally {
         setLoading(false);
       }
@@ -49,18 +49,19 @@ const Homepage: React.FC = () => {
               <span className="block text-blue-200">When You Need It Most</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed">
-              Connect with qualified, compassionate caregivers who provide personalized care 
-              in the comfort of your home. Available 24/7 for all your healthcare needs.
+              Connect with qualified, compassionate caregivers who provide
+              personalized care in the comfort of your home. Available 24/7 for
+              all your healthcare needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
+              <Link
                 to="/book"
                 className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 inline-flex items-center justify-center"
               >
                 Book a Package
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
-              <Link 
+              <Link
                 to="/caregivers"
                 className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors duration-200 inline-flex items-center justify-center"
               >
@@ -79,33 +80,44 @@ const Homepage: React.FC = () => {
               Why Choose CareConnect?
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              We provide reliable, professional healthcare services with the highest standards of care.
+              We provide reliable, professional healthcare services with the
+              highest standards of care.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="bg-blue-100 rounded-full p-6 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
                 <Shield className="h-8 w-8 text-blue-600" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Verified Caregivers</h3>
-              <p className="text-gray-600">All our caregivers are background-checked and professionally trained.</p>
+              <h3 className="text-xl font-semibold mb-2">
+                Verified Caregivers
+              </h3>
+              <p className="text-gray-600">
+                All our caregivers are background-checked and professionally
+                trained.
+              </p>
             </div>
-            
+
             <div className="text-center">
               <div className="bg-blue-100 rounded-full p-6 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
                 <Clock className="h-8 w-8 text-blue-600" />
               </div>
               <h3 className="text-xl font-semibold mb-2">24/7 Availability</h3>
-              <p className="text-gray-600">Round-the-clock care services whenever you need them most.</p>
+              <p className="text-gray-600">
+                Round-the-clock care services whenever you need them most.
+              </p>
             </div>
-            
+
             <div className="text-center">
               <div className="bg-blue-100 rounded-full p-6 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
                 <Heart className="h-8 w-8 text-blue-600" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Compassionate Care</h3>
-              <p className="text-gray-600">Personalized care plans tailored to your unique needs and preferences.</p>
+              <p className="text-gray-600">
+                Personalized care plans tailored to your unique needs and
+                preferences.
+              </p>
             </div>
           </div>
         </div>
@@ -122,10 +134,10 @@ const Homepage: React.FC = () => {
               Comprehensive care packages designed to meet all your needs.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {packages.map((pkg) => (
-              <PackageCard key={pkg.package_id} package={pkg} />
+              <PackageCard key={pkg.id} package={pkg} />
             ))}
           </div>
         </div>
@@ -138,9 +150,10 @@ const Homepage: React.FC = () => {
             Ready to Get Started?
           </h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Book your first appointment today and experience the difference professional homecare can make.
+            Book your first appointment today and experience the difference
+            professional homecare can make.
           </p>
-          <Link 
+          <Link
             to="/book"
             className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 inline-flex items-center"
           >
