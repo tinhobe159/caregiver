@@ -1,28 +1,38 @@
 import React, { useState } from 'react';
 import { Calendar, Clock, DollarSign, Eye, Filter } from 'lucide-react';
-import { appointments, customers, caregivers, services } from '../../data/mock_data';
+import { Appointment, Customer, Caregiver, Service } from '../../data/mockData';
+import { getAppointments, getCustomers, getCaregivers, getServices } from '../../services/dataService';
 
 const AppointmentManagement: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [selectedAppointment, setSelectedAppointment] = useState<any>(null);
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
+
+  const appointments: Appointment[] = getAppointments();
+  const customers: Customer[] = getCustomers();
+  const caregivers: Caregiver[] = getCaregivers();
+  const services: Service[] = getServices();
 
   const filteredAppointments = statusFilter === 'all' 
     ? appointments 
     : appointments.filter(apt => apt.status === statusFilter);
 
   const getCustomerName = (customerId: string) => {
-    const customer = customers.find(c => c.customer_id === customerId);
-    return customer ? `${customer.first_name} ${customer.last_name}` : 'Unknown Customer';
+    const customer = customers.find(c => c.id === customerId);
+    return customer ? `${customer.firstName} ${customer.lastName}` : 'Unknown Customer';
   };
 
   const getCaregiverName = (caregiverId: string) => {
-    const caregiver = caregivers.find(c => c.caregiver_id === caregiverId);
-    return caregiver ? `${caregiver.first_name} ${caregiver.last_name}` : 'Unknown Caregiver';
+    const caregiver = caregivers.find(c => c.id === caregiverId);
+    return caregiver ? `${caregiver.firstName} ${caregiver.lastName}` : 'Unknown Caregiver';
   };
 
-  const getServiceName = (serviceId: string) => {
-    const service = services.find(s => s.service_id === serviceId);
-    return service ? service.service_name : 'Unknown Service';
+  const getServiceName = (packageId: string) => {
+    const packageServices = getServices().filter(ps => ps.id === packageId);
+    const serviceNames = packageServices.map(ps => {
+      const service = services.find(s => s.id === ps.id);
+      return service ? service.name : 'Unknown Service';
+    });
+    return serviceNames.join(', ') || 'Unknown Service';
   };
 
   const formatDateTime = (dateTimeString: string) => {
@@ -124,20 +134,20 @@ const AppointmentManagement: React.FC = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredAppointments.map((appointment) => {
-                  const dateTime = formatDateTime(appointment.appointment_datetime_start);
+                  const dateTime = formatDateTime(appointment.appointmentDatetimeStart);
                   return (
-                    <tr key={appointment.appointment_id} className="hover:bg-gray-50">
+                    <tr key={appointment.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        #{appointment.appointment_id}
+                        #{appointment.id}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {getCustomerName(appointment.customer_id)}
+                        {getCustomerName(appointment.customerId)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {getCaregiverName(appointment.caregiver_id)}
+                        {getCaregiverName(appointment.caregiverId)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {getServiceName(appointment.service_id)}
+                        {getServiceName(appointment.packageId)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         <div className="space-y-1">
@@ -159,7 +169,7 @@ const AppointmentManagement: React.FC = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         <div className="flex items-center">
                           <DollarSign className="h-4 w-4 text-green-500 mr-1" />
-                          {appointment.total_cost.toFixed(2)}
+                          {appointment.totalCost.toFixed(2)}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -184,28 +194,28 @@ const AppointmentManagement: React.FC = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg max-w-md w-full p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">
-                Appointment Details #{selectedAppointment.appointment_id}
+                Appointment Details #{selectedAppointment.id}
               </h2>
               
               <div className="space-y-4">
                 <div>
                   <span className="text-sm font-medium text-gray-600">Customer:</span>
-                  <p className="text-sm text-gray-900">{getCustomerName(selectedAppointment.customer_id)}</p>
+                  <p className="text-sm text-gray-900">{getCustomerName(selectedAppointment.customerId)}</p>
                 </div>
                 
                 <div>
                   <span className="text-sm font-medium text-gray-600">Caregiver:</span>
-                  <p className="text-sm text-gray-900">{getCaregiverName(selectedAppointment.caregiver_id)}</p>
+                  <p className="text-sm text-gray-900">{getCaregiverName(selectedAppointment.caregiverId)}</p>
                 </div>
                 
                 <div>
                   <span className="text-sm font-medium text-gray-600">Service:</span>
-                  <p className="text-sm text-gray-900">{getServiceName(selectedAppointment.service_id)}</p>
+                  <p className="text-sm text-gray-900">{getServiceName(selectedAppointment.packageId)}</p>
                 </div>
                 
                 <div>
                   <span className="text-sm font-medium text-gray-600">Duration:</span>
-                  <p className="text-sm text-gray-900">{selectedAppointment.duration_minutes} minutes</p>
+                  <p className="text-sm text-gray-900">{selectedAppointment.durationMinutes} minutes</p>
                 </div>
                 
                 <div>
@@ -217,13 +227,13 @@ const AppointmentManagement: React.FC = () => {
                 
                 <div>
                   <span className="text-sm font-medium text-gray-600">Total Cost:</span>
-                  <p className="text-sm text-gray-900 font-semibold">${selectedAppointment.total_cost.toFixed(2)}</p>
+                  <p className="text-sm text-gray-900 font-semibold">${selectedAppointment.totalCost.toFixed(2)}</p>
                 </div>
                 
-                {selectedAppointment.booking_notes && (
+                {selectedAppointment.bookingNotes && (
                   <div>
                     <span className="text-sm font-medium text-gray-600">Booking Notes:</span>
-                    <p className="text-sm text-gray-900">{selectedAppointment.booking_notes}</p>
+                    <p className="text-sm text-gray-900">{selectedAppointment.bookingNotes}</p>
                   </div>
                 )}
               </div>

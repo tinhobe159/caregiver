@@ -1,12 +1,14 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock, Plus } from 'lucide-react';
-import { caregivers, caregiverAvailability } from '../../data/mock_data';
+import { Caregiver } from '../../data/mockData';
+import { getCaregivers, getCaregiverAvailability } from '../../services/dataService';
 
 const CaregiverAvailability: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const caregiver = caregivers.find(c => c.caregiver_id === id);
-  const availability = caregiverAvailability.filter(a => a.caregiver_id === id);
+  const caregivers: Caregiver[] = getCaregivers();
+  const caregiver = caregivers.find(c => c.id === id);
+  const availability = getCaregiverAvailability().filter(a => a.caregiverId === id);
 
   if (!caregiver) {
     return (
@@ -19,7 +21,7 @@ const CaregiverAvailability: React.FC = () => {
         </div>
       </div>
     );
-  };
+  }
 
   const formatTime = (timeString: string) => {
     const [hours, minutes] = timeString.split(':');
@@ -27,6 +29,16 @@ const CaregiverAvailability: React.FC = () => {
     const ampm = hour >= 12 ? 'PM' : 'AM';
     const displayHour = hour % 12 || 12;
     return `${displayHour}:${minutes} ${ampm}`;
+  };
+
+  const calculateDuration = (startTime: string, endTime: string) => {
+    const start = new Date(`2000-01-01T${startTime}`);
+    const end = new Date(`2000-01-01T${endTime}`);
+    let duration = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
+    if (duration < 0) {
+      duration += 24; // Handle times spanning midnight
+    }
+    return duration;
   };
 
   return (
@@ -44,7 +56,7 @@ const CaregiverAvailability: React.FC = () => {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Availability for {caregiver.first_name} {caregiver.last_name}
+                Availability for {caregiver.firstName} {caregiver.lastName}
               </h1>
               <p className="text-gray-600">Manage caregiver availability schedule</p>
             </div>
@@ -60,15 +72,14 @@ const CaregiverAvailability: React.FC = () => {
           <div className="flex items-center space-x-4">
             <img
               className="h-16 w-16 rounded-full object-cover"
-              src={caregiver.profile_picture_url}
-              alt={`${caregiver.first_name} ${caregiver.last_name}`}
+              src={caregiver.profilePicture}
+              alt={`${caregiver.firstName} ${caregiver.lastName}`}
             />
             <div>
               <h2 className="text-xl font-semibold text-gray-900">
-                {caregiver.first_name} {caregiver.last_name}
+                {caregiver.firstName} {caregiver.lastName}
               </h2>
-              <p className="text-gray-600">Status: {caregiver.status}</p>
-              <p className="text-gray-600">Background Check: {caregiver.background_check_status}</p>
+              <p className="text-gray-600">Background Check: {caregiver.backgroundCheckStatus}</p>
             </div>
           </div>
         </div>
@@ -106,12 +117,10 @@ const CaregiverAvailability: React.FC = () => {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {availability.map((slot) => {
-                    const startTime = new Date(`2000-01-01T${slot.start_time}`);
-                    const endTime = new Date(`2000-01-01T${slot.end_time}`);
-                    const duration = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
+                    const duration = calculateDuration(slot.startTime, slot.endTime);
                     
                     return (
-                      <tr key={slot.availability_id} className="hover:bg-gray-50">
+                      <tr key={slot.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <Calendar className="h-4 w-4 text-gray-400 mr-2" />
@@ -124,7 +133,7 @@ const CaregiverAvailability: React.FC = () => {
                           <div className="flex items-center">
                             <Clock className="h-4 w-4 text-gray-400 mr-2" />
                             <span className="text-sm text-gray-900">
-                              {formatTime(slot.start_time)}
+                              {formatTime(slot.startTime)}
                             </span>
                           </div>
                         </td>
@@ -132,20 +141,20 @@ const CaregiverAvailability: React.FC = () => {
                           <div className="flex items-center">
                             <Clock className="h-4 w-4 text-gray-400 mr-2" />
                             <span className="text-sm text-gray-900">
-                              {formatTime(slot.end_time)}
+                              {formatTime(slot.endTime)}
                             </span>
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {duration} hours
+                          {duration.toFixed(1)} hours
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                            slot.is_available 
+                            slot.isAvailable 
                               ? 'bg-green-100 text-green-800' 
                               : 'bg-red-100 text-red-800'
                           }`}>
-                            {slot.is_available ? 'Available' : 'Unavailable'}
+                            {slot.isAvailable ? 'Available' : 'Unavailable'}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">

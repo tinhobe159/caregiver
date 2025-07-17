@@ -23,7 +23,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
           </div>
           <div className="flex items-center space-x-1 text-gray-500">
             <Clock className="h-4 w-4" />
-            <span className="text-sm">{service.defaultDuration}h default</span>
+            <span className="text-sm">{service.defaultDurationMinutes}m default</span>
           </div>
         </div>
       </div>

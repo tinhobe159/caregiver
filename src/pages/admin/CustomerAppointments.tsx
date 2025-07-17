@@ -1,12 +1,17 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock, DollarSign, User } from 'lucide-react';
-import { customers, appointments, services, caregivers } from '../../data/mock_data';
+import { Customer, Appointment, Service, Caregiver } from '../../data/mockData';
+import { getCustomers, getAppointments, getServices, getCaregivers, getPackageServices } from '../../services/dataService';
 
 const CustomerAppointments: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const customer = customers.find(c => c.customer_id === id);
-  const customerAppointments = appointments.filter(a => a.customer_id === id);
+  const customers: Customer[] = getCustomers();
+  const customer = customers.find(c => c.id === id);
+  const appointments: Appointment[] = getAppointments();
+  const customerAppointments = appointments.filter(a => a.customerId === id);
+  const services: Service[] = getServices();
+  const caregivers: Caregiver[] = getCaregivers();
 
   if (!customer) {
     return (
@@ -21,14 +26,18 @@ const CustomerAppointments: React.FC = () => {
     );
   }
 
-  const getServiceName = (serviceId: string) => {
-    const service = services.find(s => s.service_id === serviceId);
-    return service ? service.service_name : 'Unknown Service';
+  const getServiceName = (packageId: string) => {
+    const packageServices = getPackageServices().filter(ps => ps.packageId === packageId);
+    const serviceNames = packageServices.map(ps => {
+      const service = services.find(s => s.id === ps.serviceId);
+      return service ? service.name : 'Unknown Service';
+    });
+    return serviceNames.join(', ') || 'Unknown Service';
   };
 
   const getCaregiverName = (caregiverId: string) => {
-    const caregiver = caregivers.find(c => c.caregiver_id === caregiverId);
-    return caregiver ? `${caregiver.first_name} ${caregiver.last_name}` : 'Unknown Caregiver';
+    const caregiver = caregivers.find(c => c.id === caregiverId);
+    return caregiver ? `${caregiver.firstName} ${caregiver.lastName}` : 'Unknown Caregiver';
   };
 
   const formatDateTime = (dateTimeString: string) => {
@@ -69,7 +78,7 @@ const CustomerAppointments: React.FC = () => {
             Back to Customers
           </Link>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Appointments for {customer.first_name} {customer.last_name}
+            Appointments for {customer.firstName} {customer.lastName}
           </h1>
           <p className="text-gray-600">View all appointments for this customer</p>
         </div>
@@ -82,10 +91,10 @@ const CustomerAppointments: React.FC = () => {
             </div>
             <div>
               <h2 className="text-xl font-semibold text-gray-900">
-                {customer.first_name} {customer.last_name}
+                {customer.firstName} {customer.lastName}
               </h2>
-              <p className="text-gray-600">Phone: {customer.phone_number}</p>
-              <p className="text-gray-600">DOB: {new Date(customer.date_of_birth).toLocaleDateString()}</p>
+              <p className="text-gray-600">Phone: {customer.phoneNumber}</p>
+              <p className="text-gray-600">DOB: {new Date(customer.dateOfBirth).toLocaleDateString()}</p>
             </div>
           </div>
         </div>
@@ -123,17 +132,17 @@ const CustomerAppointments: React.FC = () => {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {customerAppointments.map((appointment) => {
-                    const dateTime = formatDateTime(appointment.appointment_datetime_start);
+                    const dateTime = formatDateTime(appointment.appointmentDatetimeStart);
                     return (
-                      <tr key={appointment.appointment_id} className="hover:bg-gray-50">
+                      <tr key={appointment.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          #{appointment.appointment_id}
+                          #{appointment.id}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {getServiceName(appointment.service_id)}
+                          {getServiceName(appointment.packageId)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {getCaregiverName(appointment.caregiver_id)}
+                          {getCaregiverName(appointment.caregiverId)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           <div className="flex items-center space-x-4">
@@ -155,7 +164,7 @@ const CustomerAppointments: React.FC = () => {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           <div className="flex items-center">
                             <DollarSign className="h-4 w-4 text-green-500 mr-1" />
-                            {appointment.total_cost.toFixed(2)}
+                            {appointment.totalCost.toFixed(2)}
                           </div>
                         </td>
                       </tr>

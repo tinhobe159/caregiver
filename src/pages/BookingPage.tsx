@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Calendar, Clock, DollarSign, User, Heart, CheckCircle, X } from 'lucide-react';
-import { services, caregivers } from '../data/mockData';
+import { Service, Caregiver, Package, PackageService } from '../data/mockData';
+import { getServices, getCaregivers, getPackages, getPackageServices } from '../services/dataService';
 
 interface BookingForm {
-  serviceId: string;
+  packageId: string;
   caregiverId: string;
   date: string;
   time: string;
@@ -16,30 +17,54 @@ const BookingPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [formData, setFormData] = useState<BookingForm>({
-    serviceId: searchParams.get('service') || '',
+    packageId: searchParams.get('package') || '',
     caregiverId: searchParams.get('caregiver') || '',
     date: '',
     time: '',
-    duration: 1,
+    duration: 0,
     notes: ''
   });
 
-  const selectedService = services.find(s => s.id === formData.serviceId);
+  const packages: Package[] = getPackages();
+  const services: Service[] = getServices();
+  const packageServices: PackageService[] = getPackageServices();
+  const caregivers: Caregiver[] = getCaregivers();
+  const selectedPackage = packages.find(p => p.id === formData.packageId);
   const selectedCaregiver = caregivers.find(c => c.id === formData.caregiverId);
 
+  // Get services associated with the selected package
+  const getPackageServiceNames = (packageId: string) => {
+    const relatedPackageServices = packageServices.filter(ps => ps.packageId === packageId);
+    const serviceNames = relatedPackageServices.map(ps => {
+      const service = services.find(s => s.id === ps.serviceId);
+      return service ? service.name : 'Unknown Service';
+    });
+    return serviceNames.join(', ') || 'No services';
+  };
+
+  // Calculate total duration and cost based on package services
+  const calculatePackageDetails = () => {
+    if (!selectedPackage) {
+      return { totalDuration: 0, totalCost: 0 };
+    }
+    const relatedPackageServices = packageServices.filter(ps => ps.packageId === selectedPackage.id);
+    const totalDuration = relatedPackageServices.reduce((sum, ps) => {
+      const service = services.find(s => s.id === ps.serviceId);
+      return sum + (service ? service.defaultDurationMinutes / 60 : 0);
+    }, 0);
+    const totalCost = selectedPackage.totalCost; // Use package's totalCost
+    return { totalDuration, totalCost };
+  };
+
   useEffect(() => {
-    if (selectedService && !formData.duration) {
+    if (selectedPackage && !formData.duration) {
+      const { totalDuration } = calculatePackageDetails();
       setFormData(prev => ({
         ...prev,
-        duration: selectedService.defaultDuration
+        duration: totalDuration || 1 // Default to 1 if no services
       }));
     }
-  }, [selectedService, formData.duration]);
-
-  const calculateTotalCost = () => {
-    if (!selectedService) return 0;
-    return selectedService.basePricePerHour * formData.duration;
-  };
+  }, [selectedPackage, formData.duration]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,60 +79,67 @@ const BookingPage: React.FC = () => {
     }));
   };
 
-  const ConfirmationModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-md w-full p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-2">
-            <CheckCircle className="h-6 w-6 text-green-500" />
-            <h2 className="text-xl font-bold text-gray-900">Booking Confirmed!</h2>
+  const ConfirmationModal = () => {
+    const { totalCost } = calculatePackageDetails();
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-lg max-w-md w-full p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-2">
+              <CheckCircle className="h-6 w-6 text-green-500" />
+              <h2 className="text-xl font-bold text-gray-900">Booking Confirmed!</h2>
+            </div>
+            <button
+              onClick={() => setShowConfirmation(false)}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <X className="h-6 w-6" />
+            </button>
           </div>
+          
+          <div className="space-y-3 mb-6">
+            <div className="flex justify-between">
+              <span className="text-gray-600">Package:</span>
+              <span className="font-medium">{selectedPackage?.name || 'Unknown Package'}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Services:</span>
+              <span className="font-medium">{getPackageServiceNames(formData.packageId)}</span>
+            </div>
+            {selectedCaregiver && (
+              <div className="flex justify-between">
+                <span className="text-gray-600">Caregiver:</span>
+                <span className="font-medium">{selectedCaregiver.firstName} {selectedCaregiver.lastName}</span>
+              </div>
+            )}
+            <div className="flex justify-between">
+              <span className="text-gray-600">Date & Time:</span>
+              <span className="font-medium">{formData.date} at {formData.time}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Duration:</span>
+              <span className="font-medium">{formData.duration} hours</span>
+            </div>
+            <div className="flex justify-between font-semibold">
+              <span className="text-gray-900">Total Cost:</span>
+              <span className="text-green-600">${totalCost.toFixed(2)}</span>
+            </div>
+          </div>
+          
+          <p className="text-gray-600 text-sm mb-4">
+            Your booking has been confirmed. You will receive a confirmation email shortly with all the details.
+          </p>
+          
           <button
             onClick={() => setShowConfirmation(false)}
-            className="text-gray-500 hover:text-gray-700"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
           >
-            <X className="h-6 w-6" />
+            Close
           </button>
         </div>
-        
-        <div className="space-y-3 mb-6">
-          <div className="flex justify-between">
-            <span className="text-gray-600">Service:</span>
-            <span className="font-medium">{selectedService?.name}</span>
-          </div>
-          {selectedCaregiver && (
-            <div className="flex justify-between">
-              <span className="text-gray-600">Caregiver:</span>
-              <span className="font-medium">{selectedCaregiver.firstName} {selectedCaregiver.lastName}</span>
-            </div>
-          )}
-          <div className="flex justify-between">
-            <span className="text-gray-600">Date & Time:</span>
-            <span className="font-medium">{formData.date} at {formData.time}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-gray-600">Duration:</span>
-            <span className="font-medium">{formData.duration} hours</span>
-          </div>
-          <div className="flex justify-between font-semibold">
-            <span className="text-gray-900">Total Cost:</span>
-            <span className="text-green-600">${calculateTotalCost()}</span>
-          </div>
-        </div>
-        
-        <p className="text-gray-600 text-sm mb-4">
-          Your booking has been confirmed. You will receive a confirmation email shortly with all the details.
-        </p>
-        
-        <button
-          onClick={() => setShowConfirmation(false)}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          Close
-        </button>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -127,23 +159,23 @@ const BookingPage: React.FC = () => {
             <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Booking Details</h2>
               
-              {/* Service Selection */}
+              {/* Package Selection */}
               <div className="mb-6">
-                <label htmlFor="serviceId" className="block text-sm font-medium text-gray-700 mb-2">
-                  Select Service *
+                <label htmlFor="packageId" className="block text-sm font-medium text-gray-700 mb-2">
+                  Select Package *
                 </label>
                 <select
-                  id="serviceId"
-                  name="serviceId"
-                  value={formData.serviceId}
+                  id="packageId"
+                  name="packageId"
+                  value={formData.packageId}
                   onChange={handleInputChange}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  <option value="">Choose a service...</option>
-                  {services.map(service => (
-                    <option key={service.id} value={service.id}>
-                      {service.name} - ${service.basePricePerHour}/hour
+                  <option value="">Choose a package...</option>
+                  {packages.map(pkg => (
+                    <option key={pkg.id} value={pkg.id}>
+                      {pkg.name} - ${pkg.totalCost.toFixed(2)}
                     </option>
                   ))}
                 </select>
@@ -239,7 +271,7 @@ const BookingPage: React.FC = () => {
 
               <button
                 type="submit"
-                disabled={!formData.serviceId || !formData.date || !formData.time}
+                disabled={!formData.packageId || !formData.date || !formData.time}
                 className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
               >
                 Confirm Booking
@@ -252,13 +284,13 @@ const BookingPage: React.FC = () => {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-8">
               <h3 className="text-lg font-bold text-gray-900 mb-4">Booking Summary</h3>
               
-              {selectedService ? (
+              {selectedPackage ? (
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
                     <Heart className="h-5 w-5 text-blue-600" />
                     <div>
-                      <p className="font-medium">{selectedService.name}</p>
-                      <p className="text-sm text-gray-600">${selectedService.basePricePerHour}/hour</p>
+                      <p className="font-medium">{selectedPackage.name}</p>
+                      <p className="text-sm text-gray-600">{getPackageServiceNames(selectedPackage.id)}</p>
                     </div>
                   </div>
                   
@@ -298,14 +330,14 @@ const BookingPage: React.FC = () => {
                         <span className="font-bold text-gray-900">Total Cost:</span>
                       </div>
                       <span className="text-xl font-bold text-green-600">
-                        ${calculateTotalCost()}
+                        ${calculatePackageDetails().totalCost.toFixed(2)}
                       </span>
                     </div>
                   </div>
                 </div>
               ) : (
                 <p className="text-gray-500 text-center py-8">
-                  Select a service to see booking details
+                  Select a package to see booking details
                 </p>
               )}
             </div>

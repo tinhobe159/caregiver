@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle, Clock } from 'lucide-react';
-import { Caregiver, skills } from '../../data/mockData';
+import { Caregiver, Skill } from '../../data/mockData';
+import { getSkills } from '../../services/dataService';
 
 interface CaregiverCardProps {
   caregiver: Caregiver;
 }
 
 const CaregiverCard: React.FC<CaregiverCardProps> = ({ caregiver }) => {
+  const skills: Skill[] = getSkills();
   const caregiverSkills = skills.filter(skill => caregiver.skillIds.includes(skill.id));
 
   return (
