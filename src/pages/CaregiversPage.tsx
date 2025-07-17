@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Filter } from 'lucide-react';
-import { caregivers, skills } from '../data/mockData';
+import { Caregiver, Skill } from '../data/mockData';
+import { getCaregivers, getSkills } from '../services/dataService';
 import CaregiverCard from '../components/UI/CaregiverCard';
 
 const CaregiversPage: React.FC = () => {
   const [selectedSkill, setSelectedSkill] = useState<string>('all');
-  const [filteredCaregivers, setFilteredCaregivers] = useState(caregivers);
+  const [filteredCaregivers, setFilteredCaregivers] = useState<Caregiver[]>([]);
+  const caregivers: Caregiver[] = getCaregivers();
+  const skills: Skill[] = getSkills();
 
   useEffect(() => {
     if (selectedSkill === 'all') {
@@ -15,7 +18,7 @@ const CaregiversPage: React.FC = () => {
         caregivers.filter(caregiver => caregiver.skillIds.includes(selectedSkill))
       );
     }
-  }, [selectedSkill]);
+  }, [selectedSkill, caregivers]);
 
   return (
     <div className="min-h-screen bg-gray-50">

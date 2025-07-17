@@ -1,114 +1,695 @@
 {
   "packages": [
-    { "package_id": "1", "code": "PC001", "name": "Basic Personal Care", "total_cost": 38.0, "description": "Daily personal care services" },
-    { "package_id": "2", "code": "MS001", "name": "Medical Support Package", "total_cost": 40.0, "description": "Medical assistance and therapy" },
-    { "package_id": "3", "code": "CP001", "name": "Companionship Package", "total_cost": 24.0, "description": "Social and emotional support" }
+    {
+      "id": "1",
+      "code": "PC001",
+      "name": "Basic Personal Care",
+      "totalCost": 38.0,
+      "description": "Daily personal care services"
+    },
+    {
+      "id": "2",
+      "code": "MS001",
+      "name": "Medical Support Package",
+      "totalCost": 40.0,
+      "description": "Medical assistance and therapy"
+    },
+    {
+      "id": "3",
+      "code": "CP001",
+      "name": "Companionship Package",
+      "totalCost": 24.0,
+      "description": "Social and emotional support"
+    }
   ],
   "packageServices": [
-    { "package_id": "1", "service_id": "1" },
-    { "package_id": "1", "service_id": "3" },
-    { "package_id": "2", "service_id": "2" },
-    { "package_id": "2", "service_id": "4" },
-    { "package_id": "2", "service_id": "6" },
-    { "package_id": "3", "service_id": "5" }
+    { "id": "1", "packageId": "1", "serviceId": "1" },
+    { "id": "2", "packageId": "1", "serviceId": "3" },
+    { "id": "3", "packageId": "2", "serviceId": "2" },
+    { "id": "4", "packageId": "2", "serviceId": "4" },
+    { "id": "5", "packageId": "2", "serviceId": "6" },
+    { "id": "6", "packageId": "3", "serviceId": "5" }
   ],
   "services": [
-    { "service_id": "1", "service_name": "Bathing Assistance", "description": "Help with bathing and grooming", "base_price_per_hour": 20.0, "default_duration_minutes": 60, "is_active": true },
-    { "service_id": "2", "service_name": "Medication Reminders", "description": "Assistance with medication schedules", "base_price_per_hour": 15.0, "default_duration_minutes": 30, "is_active": true },
-    { "service_id": "3", "service_name": "Meal Preparation", "description": "Prepare meals for patients", "base_price_per_hour": 18.0, "default_duration_minutes": 60, "is_active": true },
-    { "service_id": "4", "service_name": "Physical Therapy", "description": "Support with mobility exercises", "base_price_per_hour": 25.0, "default_duration_minutes": 45, "is_active": true },
-    { "service_id": "5", "service_name": "Companionship Visit", "description": "Social engagement and activities", "base_price_per_hour": 12.0, "default_duration_minutes": 120, "is_active": true },
-    { "service_id": "6", "service_name": "Wound Care", "description": "Basic wound dressing and care", "base_price_per_hour": 22.0, "default_duration_minutes": 30, "is_active": false }
+    {
+      "id": "1",
+      "name": "Bathing Assistance",
+      "description": "Help with bathing and grooming",
+      "basePricePerHour": 20.0,
+      "defaultDurationMinutes": 60,
+      "isActive": true
+    },
+    {
+      "id": "2",
+      "name": "Medication Reminders",
+      "description": "Assistance with medication schedules",
+      "basePricePerHour": 15.0,
+      "defaultDurationMinutes": 30,
+      "isActive": true
+    },
+    {
+      "id": "3",
+      "name": "Meal Preparation",
+      "description": "Prepare meals for patients",
+      "basePricePerHour": 18.0,
+      "defaultDurationMinutes": 60,
+      "isActive": true
+    },
+    {
+      "id": "4",
+      "name": "Physical Therapy",
+      "description": "Support with mobility exercises",
+      "basePricePerHour": 25.0,
+      "defaultDurationMinutes": 45,
+      "isActive": true
+    },
+    {
+      "id": "5",
+      "name": "Companionship Visit",
+      "description": "Social engagement and activities",
+      "basePricePerHour": 12.0,
+      "defaultDurationMinutes": 120,
+      "isActive": true
+    },
+    {
+      "id": "6",
+      "name": "Wound Care",
+      "description": "Basic wound dressing and care",
+      "basePricePerHour": 22.0,
+      "defaultDurationMinutes": 30,
+      "isActive": false
+    }
   ],
   "caregivers": [
-    { "caregiver_id": "1", "first_name": "Jane", "last_name": "Doe", "bio": "Experienced caregiver with 5 years in personal care", "profile_picture_url": "https://images.unsplash.com/photo-1494790108377-be9c29b29330", "background_check_status": "Completed", "hire_date": "2023-01-15", "status": "Active", "skills": ["1", "2"] },
-    { "caregiver_id": "2", "first_name": "John", "last_name": "Smith", "bio": "Specialized in medical support", "profile_picture_url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d", "background_check_status": "Completed", "hire_date": "2022-06-01", "status": "Active", "skills": ["1", "3"] },
-    { "caregiver_id": "3", "first_name": "Emma", "last_name": "Brown", "bio": "Compassionate companion caregiver", "profile_picture_url": "https://images.unsplash.com/photo-1517841905240-472988babdf9", "background_check_status": "Pending", "hire_date": "2024-03-10", "status": "On Leave", "skills": ["2"] },
-    { "caregiver_id": "4", "first_name": "Michael", "last_name": "Lee", "bio": "Expert in physical therapy", "profile_picture_url": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e", "background_check_status": "Completed", "hire_date": "2021-09-01", "status": "Active", "skills": ["1", "4"] }
+    {
+      "id": "1",
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "bio": "Experienced caregiver with 5 years in personal care",
+      "profilePicture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+      "backgroundCheckStatus": "verified",
+      "yearsOfExperience": 5,
+      "skillIds": ["1", "2"]
+    },
+    {
+      "id": "2",
+      "firstName": "John",
+      "lastName": "Smith",
+      "bio": "Specialized in medical support",
+      "profilePicture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
+      "backgroundCheckStatus": "verified",
+      "yearsOfExperience": 3,
+      "skillIds": ["1", "3"]
+    },
+    {
+      "id": "3",
+      "firstName": "Emma",
+      "lastName": "Brown",
+      "bio": "Compassionate companion caregiver",
+      "profilePicture": "https://images.unsplash.com/photo-1517841905240-472988babdf9",
+      "backgroundCheckStatus": "pending",
+      "yearsOfExperience": 2,
+      "skillIds": ["2"]
+    },
+    {
+      "id": "4",
+      "firstName": "Michael",
+      "lastName": "Lee",
+      "bio": "Expert in physical therapy",
+      "profilePicture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
+      "backgroundCheckStatus": "verified",
+      "yearsOfExperience": 6,
+      "skillIds": ["1", "4"]
+    }
   ],
   "skills": [
-    { "skill_id": "1", "skill_name": "CPR Certified", "description": "Certified in cardiopulmonary resuscitation" },
-    { "skill_id": "2", "skill_name": "Dementia Care", "description": "Specialized in dementia patient care" },
-    { "skill_id": "3", "skill_name": "Wound Care", "description": "Trained in basic wound dressing" },
-    { "skill_id": "4", "skill_name": "Physical Therapy", "description": "Skilled in mobility exercises" },
-    { "skill_id": "5", "skill_name": "Medication Management", "description": "Experienced in managing patient medications" }
+    {
+      "id": "1",
+      "name": "CPR Certified",
+      "description": "Certified in cardiopulmonary resuscitation"
+    },
+    {
+      "id": "2",
+      "name": "Dementia Care",
+      "description": "Specialized training in dementia and Alzheimer's care"
+    },
+    {
+      "id": "3",
+      "name": "Medication Administration",
+      "description": "Licensed to administer medications"
+    },
+    {
+      "id": "4",
+      "name": "Physical Therapy Assistant",
+      "description": "Trained to assist with physical therapy exercises"
+    },
+    {
+      "id": "5",
+      "name": "Wound Care",
+      "description": "Specialized in wound care and dressing changes"
+    }
   ],
   "customers": [
-    { "customer_id": "1", "first_name": "Alice", "last_name": "Johnson", "date_of_birth": "1945-03-12", "phone_number": "555-0101", "emergency_contact_name": "Bob Johnson", "emergency_contact_phone": "555-0102", "medical_info": { "allergies": "Penicillin", "medications": "Metformin 500mg", "medical_conditions": "Diabetes" } },
-    { "customer_id": "2", "first_name": "Robert", "last_name": "Smith", "date_of_birth": "1950-07-19", "phone_number": "555-0103", "emergency_contact_name": "Mary Smith", "emergency_contact_phone": "555-0104", "medical_info": { "allergies": "None", "medications": "Aspirin 81mg", "medical_conditions": "Hypertension" } },
-    { "customer_id": "3", "first_name": "Susan", "last_name": "Davis", "date_of_birth": "1960-11-02", "phone_number": "555-0105", "emergency_contact_name": "Tom Davis", "emergency_contact_phone": "555-0106", "medical_info": { "allergies": "Shellfish", "medications": "None", "medical_conditions": "Arthritis" } },
-    { "customer_id": "4", "first_name": "James", "last_name": "Wilson", "date_of_birth": "1938-04-25", "phone_number": "555-0107", "emergency_contact_name": "Lisa Wilson", "emergency_contact_phone": "555-0108", "medical_info": { "allergies": "None", "medications": "Donepezil 10mg", "medical_conditions": "Dementia" } },
-    { "customer_id": "5", "first_name": "Linda", "last_name": "Moore", "date_of_birth": "1955-09-15", "phone_number": "555-0109", "emergency_contact_name": "Mark Moore", "emergency_contact_phone": "555-0110", "medical_info": { "allergies": "Latex", "medications": "Ibuprofen 200mg", "medical_conditions": "Chronic Pain" } }
+    {
+      "id": "1",
+      "firstName": "Alice",
+      "lastName": "Johnson",
+      "dateOfBirth": "1945-03-12",
+      "phoneNumber": "555-0101",
+      "emergencyContactName": "Bob Johnson",
+      "emergencyContactPhone": "555-0102",
+      "medicalInfo": {
+        "allergies": "Penicillin",
+        "medications": "Metformin 500mg",
+        "medicalConditions": "Diabetes"
+      }
+    },
+    {
+      "id": "2",
+      "firstName": "Robert",
+      "lastName": "Smith",
+      "dateOfBirth": "1950-07-19",
+      "phoneNumber": "555-0103",
+      "emergencyContactName": "Mary Smith",
+      "emergencyContactPhone": "555-0104",
+      "medicalInfo": {
+        "allergies": "None",
+        "medications": "Aspirin 81mg",
+        "medicalConditions": "Hypertension"
+      }
+    },
+    {
+      "id": "3",
+      "firstName": "Susan",
+      "lastName": "Davis",
+      "dateOfBirth": "1960-11-02",
+      "phoneNumber": "555-0105",
+      "emergencyContactName": "Tom Davis",
+      "emergencyContactPhone": "555-0106",
+      "medicalInfo": {
+        "allergies": "Shellfish",
+        "medications": "None",
+        "medicalConditions": "Arthritis"
+      }
+    },
+    {
+      "id": "4",
+      "firstName": "James",
+      "lastName": "Wilson",
+      "dateOfBirth": "1938-04-25",
+      "phoneNumber": "555-0107",
+      "emergencyContactName": "Lisa Wilson",
+      "emergencyContactPhone": "555-0108",
+      "medicalInfo": {
+        "allergies": "None",
+        "medications": "Donepezil 10mg",
+        "medicalConditions": "Dementia"
+      }
+    },
+    {
+      "id": "5",
+      "firstName": "Linda",
+      "lastName": "Moore",
+      "dateOfBirth": "1955-09-15",
+      "phoneNumber": "555-0109",
+      "emergencyContactName": "Mark Moore",
+      "emergencyContactPhone": "555-0110",
+      "medicalInfo": {
+        "allergies": "Latex",
+        "medications": "Ibuprofen 200mg",
+        "medicalConditions": "Chronic Pain"
+      }
+    }
   ],
   "appointments": [
-    { "appointment_id": "1", "customer_id": "1", "caregiver_id": "1", "package_id": "1", "appointment_datetime_start": "2025-07-20T09:00:00Z", "appointment_datetime_end": "2025-07-20T10:00:00Z", "duration_minutes": 60, "status": "Confirmed", "booking_notes": "Needs assistance with shower", "total_cost": 38.0 },
-    { "appointment_id": "2", "customer_id": "2", "caregiver_id": "2", "package_id": "2", "appointment_datetime_start": "2025-07-21T10:30:00Z", "appointment_datetime_end": "2025-07-21T11:00:00Z", "duration_minutes": 30, "status": "Pending", "booking_notes": "", "total_cost": 40.0 },
-    { "appointment_id": "3", "customer_id": "3", "caregiver_id": "3", "package_id": "3", "appointment_datetime_start": "2025-07-22T14:00:00Z", "appointment_datetime_end": "2025-07-22T16:00:00Z", "duration_minutes": 120, "status": "Completed", "booking_notes": "Prefers board games", "total_cost": 24.0 },
-    { "appointment_id": "4", "customer_id": "4", "caregiver_id": "4", "package_id": "2", "appointment_datetime_start": "2025-07-23T11:00:00Z", "appointment_datetime_end": "2025-07-23T11:45:00Z", "duration_minutes": 45, "status": "Confirmed", "booking_notes": "Focus on leg exercises", "total_cost": 40.0 },
-    { "appointment_id": "5", "customer_id": "5", "caregiver_id": "1", "package_id": "1", "appointment_datetime_start": "2025-07-24T08:00:00Z", "appointment_datetime_end": "2025-07-24T09:00:00Z", "duration_minutes": 60, "status": "Cancelled", "booking_notes": "Cancelled due to hospital visit", "total_cost": 0.0 },
-    { "appointment_id": "6", "customer_id": "1", "caregiver_id": "2", "package_id": "2", "appointment_datetime_start": "2025-07-25T09:30:00Z", "appointment_datetime_end": "2025-07-25T10:00:00Z", "duration_minutes": 30, "status": "Pending", "booking_notes": "", "total_cost": 40.0 },
-    { "appointment_id": "7", "customer_id": "2", "caregiver_id": "4", "package_id": "2", "appointment_datetime_start": "2025-07-26T10:00:00Z", "appointment_datetime_end": "2025-07-26T10:45:00Z", "duration_minutes": 45, "status": "Confirmed", "booking_notes": "Mobility support needed", "total_cost": 40.0 },
-    { "appointment_id": "8", "customer_id": "3", "caregiver_id": "3", "package_id": "3", "appointment_datetime_start": "2025-07-27T13:00:00Z", "appointment_datetime_end": "2025-07-27T15:00:00Z", "duration_minutes": 120, "status": "Rescheduled", "booking_notes": "Rescheduled from 07-26", "total_cost": 24.0 },
-    { "appointment_id": "9", "customer_id": "4", "caregiver_id": "1", "package_id": "1", "appointment_datetime_start": "2025-07-28T09:00:00Z", "appointment_datetime_end": "2025-07-28T10:00:00Z", "duration_minutes": 60, "status": "Confirmed", "booking_notes": "", "total_cost": 38.0 },
-    { "appointment_id": "10", "customer_id": "5", "caregiver_id": "2", "package_id": "2", "appointment_datetime_start": "2025-07-29T11:00:00Z", "appointment_datetime_end": "2025-07-29T11:30:00Z", "duration_minutes": 30, "status": "Pending", "booking_notes": "", "total_cost": 40.0 }
+    {
+      "id": "1",
+      "customerId": "1",
+      "caregiverId": "1",
+      "packageId": "1",
+      "appointmentDatetimeStart": "2025-07-20T09:00:00Z",
+      "appointmentDatetimeEnd": "2025-07-20T10:00:00Z",
+      "durationMinutes": 60,
+      "status": "Confirmed",
+      "bookingNotes": "Needs assistance with shower",
+      "totalCost": 38.0
+    },
+    {
+      "id": "2",
+      "customerId": "2",
+      "caregiverId": "2",
+      "packageId": "2",
+      "appointmentDatetimeStart": "2025-07-21T10:30:00Z",
+      "appointmentDatetimeEnd": "2025-07-21T11:00:00Z",
+      "durationMinutes": 30,
+      "status": "Pending",
+      "bookingNotes": "",
+      "totalCost": 40.0
+    },
+    {
+      "id": "3",
+      "customerId": "3",
+      "caregiverId": "3",
+      "packageId": "3",
+      "appointmentDatetimeStart": "2025-07-22T14:00:00Z",
+      "appointmentDatetimeEnd": "2025-07-22T16:00:00Z",
+      "durationMinutes": 120,
+      "status": "Completed",
+      "bookingNotes": "Prefers board games",
+      "totalCost": 24.0
+    },
+    {
+      "id": "4",
+      "customerId": "4",
+      "caregiverId": "4",
+      "packageId": "2",
+      "appointmentDatetimeStart": "2025-07-23T11:00:00Z",
+      "appointmentDatetimeEnd": "2025-07-23T11:45:00Z",
+      "durationMinutes": 45,
+      "status": "Confirmed",
+      "bookingNotes": "Focus on leg exercises",
+      "totalCost": 40.0
+    },
+    {
+      "id": "5",
+      "customerId": "5",
+      "caregiverId": "1",
+      "packageId": "1",
+      "appointmentDatetimeStart": "2025-07-24T08:00:00Z",
+      "appointmentDatetimeEnd": "2025-07-24T09:00:00Z",
+      "durationMinutes": 60,
+      "status": "Cancelled",
+      "bookingNotes": "Cancelled due to hospital visit",
+      "totalCost": 0.0
+    },
+    {
+      "id": "6",
+      "customerId": "1",
+      "caregiverId": "2",
+      "packageId": "2",
+      "appointmentDatetimeStart": "2025-07-25T09:30:00Z",
+      "appointmentDatetimeEnd": "2025-07-25T10:00:00Z",
+      "durationMinutes": 30,
+      "status": "Pending",
+      "bookingNotes": "",
+      "totalCost": 40.0
+    },
+    {
+      "id": "7",
+      "customerId": "2",
+      "caregiverId": "4",
+      "packageId": "2",
+      "appointmentDatetimeStart": "2025-07-26T10:00:00Z",
+      "appointmentDatetimeEnd": "2025-07-26T10:45:00Z",
+      "durationMinutes": 45,
+      "status": "Confirmed",
+      "bookingNotes": "Mobility support needed",
+      "totalCost": 40.0
+    },
+    {
+      "id": "8",
+      "customerId": "3",
+      "caregiverId": "3",
+      "packageId": "3",
+      "appointmentDatetimeStart": "2025-07-27T13:00:00Z",
+      "appointmentDatetimeEnd": "2025-07-27T15:00:00Z",
+      "durationMinutes": 120,
+      "status": "Rescheduled",
+      "bookingNotes": "Rescheduled from 07-26",
+      "totalCost": 24.0
+    },
+    {
+      "id": "9",
+      "customerId": "4",
+      "caregiverId": "1",
+      "packageId": "1",
+      "appointmentDatetimeStart": "2025-07-28T09:00:00Z",
+      "appointmentDatetimeEnd": "2025-07-28T10:00:00Z",
+      "durationMinutes": 60,
+      "status": "Confirmed",
+      "bookingNotes": "",
+      "totalCost": 38.0
+    },
+    {
+      "id": "10",
+      "customerId": "5",
+      "caregiverId": "2",
+      "packageId": "2",
+      "appointmentDatetimeStart": "2025-07-29T11:00:00Z",
+      "appointmentDatetimeEnd": "2025-07-29T11:30:00Z",
+      "durationMinutes": 30,
+      "status": "Pending",
+      "bookingNotes": "",
+      "totalCost": 40.0
+    }
   ],
   "recurringSchedules": [
-    { "schedule_id": "1", "customer_id": "1", "package_id": "1", "caregiver_id": "1", "start_date": "2025-07-20", "end_date": "2025-08-20", "recurrence_pattern": "FREQ=WEEKLY;BYDAY=MO,WE", "start_time_of_day": "09:00:00", "duration_minutes": 60, "is_active": true },
-    { "schedule_id": "2", "customer_id": "2", "package_id": "2", "caregiver_id": "2", "start_date": "2025-07-21", "end_date": null, "recurrence_pattern": "FREQ=DAILY", "start_time_of_day": "10:30:00", "duration_minutes": 30, "is_active": true },
-    { "schedule_id": "3", "customer_id": "3", "package_id": "3", "caregiver_id": "3", "start_date": "2025-07-22", "end_date": "2025-09-22", "recurrence_pattern": "FREQ=WEEKLY;BYDAY=TU", "start_time_of_day": "14:00:00", "duration_minutes": 120, "is_active": true }
+    {
+      "id": "1",
+      "customerId": "1",
+      "packageId": "1",
+      "caregiverId": "1",
+      "startDate": "2025-07-20",
+      "endDate": "2025-08-20",
+      "recurrencePattern": "FREQ=WEEKLY;BYDAY=MO,WE",
+      "startTimeOfDay": "09:00:00",
+      "durationMinutes": 60,
+      "isActive": true
+    },
+    {
+      "id": "2",
+      "customerId": "2",
+      "packageId": "2",
+      "caregiverId": "2",
+      "startDate": "2025-07-21",
+      "endDate": null,
+      "recurrencePattern": "FREQ=DAILY",
+      "startTimeOfDay": "10:30:00",
+      "durationMinutes": 30,
+      "isActive": true
+    },
+    {
+      "id": "3",
+      "customerId": "3",
+      "packageId": "3",
+      "caregiverId": "3",
+      "startDate": "2025-07-22",
+      "endDate": "2025-09-22",
+      "recurrencePattern": "FREQ=WEEKLY;BYDAY=TU",
+      "startTimeOfDay": "14:00:00",
+      "durationMinutes": 120,
+      "isActive": true
+    }
   ],
   "appointmentExceptions": [
-    { "exception_id": "1", "recurring_schedule_id": "1", "original_appointment_datetime": "2025-07-27T09:00:00Z", "exception_type": "Cancelled", "reason": "Customer unavailable" },
-    { "exception_id": "2", "recurring_schedule_id": "3", "original_appointment_datetime": "2025-07-26T14:00:00Z", "exception_type": "Rescheduled", "new_appointment_id": "8", "reason": "Caregiver conflict" }
+    {
+      "id": "1",
+      "recurringScheduleId": "1",
+      "originalAppointmentDatetime": "2025-07-27T09:00:00Z",
+      "exceptionType": "Cancelled",
+      "reason": "Customer unavailable"
+    },
+    {
+      "id": "2",
+      "recurringScheduleId": "3",
+      "originalAppointmentDatetime": "2025-07-26T14:00:00Z",
+      "exceptionType": "Rescheduled",
+      "newAppointmentId": "8",
+      "reason": "Caregiver conflict"
+    }
   ],
   "caregiverAvailability": [
-    { "availability_id": "1", "caregiver_id": "1", "date": "2025-07-20", "start_time": "08:00:00", "end_time": "12:00:00", "is_available": true },
-    { "availability_id": "2", "caregiver_id": "1", "date": "2025-07-24", "start_time": "08:00:00", "end_time": "14:00:00", "is_available": true },
-    { "availability_id": "3", "caregiver_id": "2", "date": "2025-07-21", "start_time": "09:00:00", "end_time": "15:00:00", "is_available": true },
-    { "availability_id": "4", "caregiver_id": "3", "date": "2025-07-22", "start_time": "12:00:00", "end_time": "16:00:00", "is_available": true },
-    { "availability_id": "5", "caregiver_id": "4", "date": "2025-07-23", "start_time": "10:00:00", "end_time": "14:00:00", "is_available": true }
+    {
+      "id": "1",
+      "caregiverId": "1",
+      "date": "2025-07-20",
+      "startTime": "08:00:00",
+      "endTime": "12:00:00",
+      "isAvailable": true
+    },
+    {
+      "id": "2",
+      "caregiverId": "1",
+      "date": "2025-07-24",
+      "startTime": "08:00:00",
+      "endTime": "14:00:00",
+      "isAvailable": true
+    },
+    {
+      "id": "3",
+      "caregiverId": "2",
+      "date": "2025-07-21",
+      "startTime": "09:00:00",
+      "endTime": "15:00:00",
+      "isAvailable": true
+    },
+    {
+      "id": "4",
+      "caregiverId": "3",
+      "date": "2025-07-22",
+      "startTime": "12:00:00",
+      "endTime": "16:00:00",
+      "isAvailable": true
+    },
+    {
+      "id": "5",
+      "caregiverId": "4",
+      "date": "2025-07-23",
+      "startTime": "10:00:00",
+      "endTime": "14:00:00",
+      "isAvailable": true
+    }
   ],
   "carePlans": [
-    { "care_plan_id": "1", "customer_id": "1", "overall_goal": "Manage diabetes", "start_date": "2025-07-01", "status": "Active" },
-    { "care_plan_id": "2", "customer_id": "4", "overall_goal": "Improve dementia care", "start_date": "2025-07-10", "status": "Active" },
-    { "care_plan_id": "3", "customer_id": "5", "overall_goal": "Reduce chronic pain", "start_date": "2025-07-15", "status": "Active" }
+    {
+      "id": "1",
+      "customerId": "1",
+      "overallGoal": "Manage diabetes",
+      "startDate": "2025-07-01",
+      "status": "Active"
+    },
+    {
+      "id": "2",
+      "customerId": "4",
+      "overallGoal": "Improve dementia care",
+      "startDate": "2025-07-10",
+      "status": "Active"
+    },
+    {
+      "id": "3",
+      "customerId": "5",
+      "overallGoal": "Reduce chronic pain",
+      "startDate": "2025-07-15",
+      "status": "Active"
+    }
   ],
   "carePlanTasks": [
-    { "task_id": "1", "care_plan_id": "1", "description": "Monitor blood sugar", "frequency": "Daily", "is_critical": true },
-    { "task_id": "2", "care_plan_id": "1", "description": "Ensure medication adherence", "frequency": "Daily", "is_critical": true },
-    { "task_id": "3", "care_plan_id": "2", "description": "Provide memory exercises", "frequency": "Twice a week", "is_critical": false },
-    { "task_id": "4", "care_plan_id": "2", "description": "Ensure safe environment", "frequency": "Daily", "is_critical": true },
-    { "task_id": "5", "care_plan_id": "3", "description": "Assist with stretching", "frequency": "Weekly", "is_critical": false }
+    {
+      "id": "1",
+      "carePlanId": "1",
+      "description": "Monitor blood sugar",
+      "frequency": "Daily",
+      "isCritical": true
+    },
+    {
+      "id": "2",
+      "carePlanId": "1",
+      "description": "Ensure medication adherence",
+      "frequency": "Daily",
+      "isCritical": true
+    },
+    {
+      "id": "3",
+      "carePlanId": "2",
+      "description": "Provide memory exercises",
+      "frequency": "Twice a week",
+      "isCritical": false
+    },
+    {
+      "id": "4",
+      "carePlanId": "2",
+      "description": "Ensure safe environment",
+      "frequency": "Daily",
+      "isCritical": true
+    },
+    {
+      "id": "5",
+      "carePlanId": "3",
+      "description": "Assist with stretching",
+      "frequency": "Weekly",
+      "isCritical": false
+    }
   ],
   "evvRecords": [
-    { "evv_id": "1", "appointment_id": "1", "caregiver_id": "1", "check_in_time": "2025-07-20T09:00:00Z", "check_out_time": "2025-07-20T10:00:00Z", "status": "Completed", "caregiver_notes": "Completed as scheduled" },
-    { "evv_id": "2", "appointment_id": "3", "caregiver_id": "3", "check_in_time": "2025-07-22T14:00:00Z", "check_out_time": "2025-07-22T16:00:00Z", "status": "Completed", "caregiver_notes": "Played chess" },
-    { "evv_id": "3", "appointment_id": "4", "caregiver_id": "4", "check_in_time": "2025-07-23T11:00:00Z", "check_out_time": "2025-07-23T11:45:00Z", "status": "Completed", "caregiver_notes": "Focused on leg mobility" },
-    { "evv_id": "4", "appointment_id": "7", "caregiver_id": "4", "check_in_time": "2025-07-26T10:00:00Z", "check_out_time": null, "status": "In Progress", "caregiver_notes": "" },
-    { "evv_id": "5", "appointment_id": "9", "caregiver_id": "1", "check_in_time": "2025-07-28T09:00:00Z", "check_out_time": "2025-07-28T10:00:00Z", "status": "Completed", "caregiver_notes": "All tasks completed" }
+    {
+      "id": "1",
+      "appointmentId": "1",
+      "caregiverId": "1",
+      "checkInTime": "2025-07-20T09:00:00Z",
+      "checkOutTime": "2025-07-20T10:00:00Z",
+      "status": "Completed",
+      "caregiverNotes": "Completed as scheduled"
+    },
+    {
+      "id": "2",
+      "appointmentId": "3",
+      "caregiverId": "3",
+      "checkInTime": "2025-07-22T14:00:00Z",
+      "checkOutTime": "2025-07-22T16:00:00Z",
+      "status": "Completed",
+      "caregiverNotes": "Played chess"
+    },
+    {
+      "id": "3",
+      "appointmentId": "4",
+      "caregiverId": "4",
+      "checkInTime": "2025-07-23T11:00:00Z",
+      "checkOutTime": "2025-07-23T11:45:00Z",
+      "status": "Completed",
+      "caregiverNotes": "Focused on leg mobility"
+    },
+    {
+      "id": "4",
+      "appointmentId": "7",
+      "caregiverId": "4",
+      "checkInTime": "2025-07-26T10:00:00Z",
+      "checkOutTime": null,
+      "status": "In Progress",
+      "caregiverNotes": ""
+    },
+    {
+      "id": "5",
+      "appointmentId": "9",
+      "caregiverId": "1",
+      "checkInTime": "2025-07-28T09:00:00Z",
+      "checkOutTime": "2025-07-28T10:00:00Z",
+      "status": "Completed",
+      "caregiverNotes": "All tasks completed"
+    }
   ],
   "payments": [
-    { "payment_id": "1", "appointment_id": "1", "customer_id": "1", "amount": 38.0, "payment_date": "2025-07-20T08:00:00Z", "payment_method": "Credit Card", "status": "Completed" },
-    { "payment_id": "2", "appointment_id": "2", "customer_id": "2", "amount": 40.0, "payment_date": null, "payment_method": "Credit Card", "status": "Pending" },
-    { "payment_id": "3", "appointment_id": "3", "customer_id": "3", "amount": 24.0, "payment_date": "2025-07-22T13:00:00Z", "payment_method": "Bank Transfer", "status": "Completed" },
-    { "payment_id": "4", "appointment_id": "4", "customer_id": "4", "amount": 40.0, "payment_date": "2025-07-23T10:00:00Z", "payment_method": "Credit Card", "status": "Completed" },
-    { "payment_id": "5", "appointment_id": "7", "customer_id": "2", "amount": 40.0, "payment_date": null, "payment_method": "Credit Card", "status": "Pending" }
+    {
+      "id": "1",
+      "appointmentId": "1",
+      "customerId": "1",
+      "amount": 38.0,
+      "paymentDate": "2025-07-20T08:00:00Z",
+      "paymentMethod": "Credit Card",
+      "status": "Completed"
+    },
+    {
+      "id": "2",
+      "appointmentId": "2",
+      "customerId": "2",
+      "amount": 40.0,
+      "paymentDate": null,
+      "paymentMethod": "Credit Card",
+      "status": "Pending"
+    },
+    {
+      "id": "3",
+      "appointmentId": "3",
+      "customerId": "3",
+      "amount": 24.0,
+      "paymentDate": "2025-07-22T13:00:00Z",
+      "paymentMethod": "Bank Transfer",
+      "status": "Completed"
+    },
+    {
+      "id": "4",
+      "appointmentId": "4",
+      "customerId": "4",
+      "amount": 40.0,
+      "paymentDate": "2025-07-23T10:00:00Z",
+      "paymentMethod": "Credit Card",
+      "status": "Completed"
+    },
+    {
+      "id": "5",
+      "appointmentId": "7",
+      "customerId": "2",
+      "amount": 40.0,
+      "paymentDate": null,
+      "paymentMethod": "Credit Card",
+      "status": "Pending"
+    }
   ],
   "reviews": [
-    { "review_id": "1", "appointment_id": "1", "customer_id": "1", "caregiver_id": "1", "rating": 5, "comment": "Jane was very professional!", "review_date": "2025-07-20T10:30:00Z", "is_published": true },
-    { "review_id": "2", "appointment_id": "3", "customer_id": "3", "caregiver_id": "3", "rating": 4, "comment": "Enjoyed the companionship", "review_date": "2025-07-22T16:30:00Z", "is_published": true },
-    { "review_id": "3", "appointment_id": "4", "customer_id": "4", "caregiver_id": "4", "rating": 5, "comment": "Great therapy session", "review_date": "2025-07-23T12:00:00Z", "is_published": true },
-    { "review_id": "4", "appointment_id": "9", "customer_id": "4", "caregiver_id": "1", "rating": 4, "comment": "Very helpful", "review_date": "2025-07-28T10:30:00Z", "is_published": true },
-    { "review_id": "5", "appointment_id": "3", "customer_id": "3", "caregiver_id": "3", "rating": 3, "comment": "Good but could be more engaging", "review_date": "2025-07-22T17:00:00Z", "is_published": false }
+    {
+      "id": "1",
+      "appointmentId": "1",
+      "customerId": "1",
+      "caregiverId": "1",
+      "rating": 5,
+      "comment": "Jane was very professional!",
+      "reviewDate": "2025-07-20T10:30:00Z",
+      "isPublished": true
+    },
+    {
+      "id": "2",
+      "appointmentId": "3",
+      "customerId": "3",
+      "caregiverId": "3",
+      "rating": 4,
+      "comment": "Enjoyed the companionship",
+      "reviewDate": "2025-07-22T16:30:00Z",
+      "isPublished": true
+    },
+    {
+      "id": "3",
+      "appointmentId": "4",
+      "customerId": "4",
+      "caregiverId": "4",
+      "rating": 5,
+      "comment": "Great therapy session",
+      "reviewDate": "2025-07-23T12:00:00Z",
+      "isPublished": true
+    },
+    {
+      "id": "4",
+      "appointmentId": "9",
+      "customerId": "4",
+      "caregiverId": "1",
+      "rating": 4,
+      "comment": "Very helpful",
+      "reviewDate": "2025-07-28T10:30:00Z",
+      "isPublished": true
+    },
+    {
+      "id": "5",
+      "appointmentId": "3",
+      "customerId": "3",
+      "caregiverId": "3",
+      "rating": 3,
+      "comment": "Good but could be more engaging",
+      "reviewDate": "2025-07-22T17:00:00Z",
+      "isPublished": false
+    }
   ],
   "addresses": [
-    { "address_id": "1", "street_address": "123 Main St", "city": "Springfield", "state_province": "IL", "postal_code": "62701", "country": "USA" },
-    { "address_id": "2", "street_address": "456 Oak Ave", "city": "Springfield", "state_province": "IL", "postal_code": "62702", "country": "USA" },
-    { "address_id": "3", "street_address": "789 Pine Rd", "city": "Springfield", "state_province": "IL", "postal_code": "62703", "country": "USA" }
+    {
+      "id": "1",
+      "streetAddress": "123 Main St",
+      "city": "Springfield",
+      "stateProvince": "IL",
+      "postalCode": "62701",
+      "country": "USA"
+    },
+    {
+      "id": "2",
+      "streetAddress": "456 Oak Ave",
+      "city": "Springfield",
+      "stateProvince": "IL",
+      "postalCode": "62702",
+      "country": "USA"
+    },
+    {
+      "id": "3",
+      "streetAddress": "789 Pine Rd",
+      "city": "Springfield",
+      "stateProvince": "IL",
+      "postalCode": "62703",
+      "country": "USA"
+    }
   ],
   "users": [
-    { "user_id": "1", "email": "admin@homecare.com", "user_type": "Admin", "is_active": true },
-    { "user_id": "2", "email": "alice.johnson@homecare.com", "user_type": "Customer", "is_active": true },
-    { "user_id": "3", "email": "jane.doe@homecare.com", "user_type": "Caregiver", "is_active": true }
+    {
+      "id": "1",
+      "email": "admin@homecare.com",
+      "userType": "Admin",
+      "isActive": true
+    },
+    {
+      "id": "2",
+      "email": "alice.johnson@homecare.com",
+      "userType": "Customer",
+      "isActive": true
+    },
+    {
+      "id": "3",
+      "email": "jane.doe@homecare.com",
+      "userType": "Caregiver",
+      "isActive": true
+    }
   ]
 }

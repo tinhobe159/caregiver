@@ -4,7 +4,6 @@ import { Filter, Search } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { API_BASE_URL } from '../api/config';
-import ServiceCard from '../components/UI/ServiceCard';
 
 const ServicesPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();

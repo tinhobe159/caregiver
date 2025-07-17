@@ -1,10 +1,13 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, Clock, Mail, Phone } from 'lucide-react';
-import { caregivers, skills } from '../data/mockData';
+import { Caregiver, Skill } from '../data/mockData';
+import { getCaregivers, getSkills } from '../services/dataService';
 
 const CaregiverDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const caregivers: Caregiver[] = getCaregivers();
+  const skills: Skill[] = getSkills();
   const caregiver = caregivers.find(c => c.id === id);
 
   if (!caregiver) {

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Edit, Trash2, Eye, ChevronDown, ChevronRight, Phone, User } from 'lucide-react';
-import { customers } from '../../data/mock_data';
+import { Customer } from '../../data/mockData';
+import { getCustomers } from '../../services/dataService';
 
 const CustomerManagement: React.FC = () => {
   const [expandedCustomer, setExpandedCustomer] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  const customers: Customer[] = getCustomers();
 
   const toggleExpanded = (customerId: string) => {
     setExpandedCustomer(expandedCustomer === customerId ? null : customerId);
@@ -13,7 +15,6 @@ const CustomerManagement: React.FC = () => {
 
   const handleDelete = (customerId: string) => {
     if (window.confirm('Are you sure you want to delete this customer?')) {
-      // Mock delete action
       console.log('Deleting customer:', customerId);
     }
   };
@@ -64,15 +65,15 @@ const CustomerManagement: React.FC = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {customers.map((customer) => (
-                  <React.Fragment key={customer.customer_id}>
+                  <React.Fragment key={customer.id}>
                     <tr className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <button
-                            onClick={() => toggleExpanded(customer.customer_id)}
+                            onClick={() => toggleExpanded(customer.id)}
                             className="mr-2 p-1 hover:bg-gray-200 rounded"
                           >
-                            {expandedCustomer === customer.customer_id ? (
+                            {expandedCustomer === customer.id ? (
                               <ChevronDown className="h-4 w-4" />
                             ) : (
                               <ChevronRight className="h-4 w-4" />
@@ -86,30 +87,30 @@ const CustomerManagement: React.FC = () => {
                             </div>
                             <div className="ml-4">
                               <div className="text-sm font-medium text-gray-900">
-                                {customer.first_name} {customer.last_name}
+                                {customer.firstName} {customer.lastName}
                               </div>
                             </div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {formatDate(customer.date_of_birth)}
+                        {formatDate(customer.dateOfBirth)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         <div className="flex items-center">
                           <Phone className="h-4 w-4 text-gray-400 mr-2" />
-                          {customer.phone_number}
+                          {customer.phoneNumber}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         <div>
-                          <div className="font-medium">{customer.emergency_contact_name}</div>
-                          <div className="text-gray-500">{customer.emergency_contact_phone}</div>
+                          <div className="font-medium">{customer.emergencyContactName}</div>
+                          <div className="text-gray-500">{customer.emergencyContactPhone}</div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                         <Link
-                          to={`/admin/customers/${customer.customer_id}/appointments`}
+                          to={`/admin/customers/${customer.id}/appointments`}
                           className="text-blue-600 hover:text-blue-900 inline-flex items-center"
                         >
                           <Eye className="h-4 w-4 mr-1" />
@@ -120,7 +121,7 @@ const CustomerManagement: React.FC = () => {
                           Edit
                         </button>
                         <button
-                          onClick={() => handleDelete(customer.customer_id)}
+                          onClick={() => handleDelete(customer.id)}
                           className="text-red-600 hover:text-red-900 inline-flex items-center"
                         >
                           <Trash2 className="h-4 w-4 mr-1" />
@@ -128,7 +129,7 @@ const CustomerManagement: React.FC = () => {
                         </button>
                       </td>
                     </tr>
-                    {expandedCustomer === customer.customer_id && (
+                    {expandedCustomer === customer.id && (
                       <tr>
                         <td colSpan={5} className="px-6 py-4 bg-gray-50">
                           <div className="space-y-3">
@@ -136,15 +137,15 @@ const CustomerManagement: React.FC = () => {
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                               <div>
                                 <span className="text-sm font-medium text-gray-600">Allergies:</span>
-                                <p className="text-sm text-gray-900">{customer.medical_info.allergies}</p>
+                                <p className="text-sm text-gray-900">{customer.medicalInfo.allergies}</p>
                               </div>
                               <div>
                                 <span className="text-sm font-medium text-gray-600">Medications:</span>
-                                <p className="text-sm text-gray-900">{customer.medical_info.medications}</p>
+                                <p className="text-sm text-gray-900">{customer.medicalInfo.medications}</p>
                               </div>
                               <div>
                                 <span className="text-sm font-medium text-gray-600">Medical Conditions:</span>
-                                <p className="text-sm text-gray-900">{customer.medical_info.medical_conditions}</p>
+                                <p className="text-sm text-gray-900">{customer.medicalInfo.medicalConditions}</p>
                               </div>
                             </div>
                           </div>
@@ -191,6 +192,43 @@ const CustomerManagement: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
                   <input
                     type="tel"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Emergency Contact Name</label>
+                    <input
+                      type="text"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Emergency Contact Phone</label>
+                    <input
+                      type="tel"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Allergies</label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Medications</label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Medical Conditions</label>
+                  <input
+                    type="text"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
