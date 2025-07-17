@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle, Clock } from 'lucide-react';
 import { Caregiver, Skill } from '../../data/mockData';
@@ -9,7 +9,8 @@ interface CaregiverCardProps {
 }
 
 const CaregiverCard: React.FC<CaregiverCardProps> = ({ caregiver }) => {
-  const skills: Skill[] = getSkills();
+  // Memoize skills to ensure stable reference
+  const skills: Skill[] = useMemo(() => getSkills(), []);
   const caregiverSkills = skills.filter(skill => caregiver.skillIds.includes(skill.id));
 
   return (
