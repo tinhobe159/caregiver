@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Filter, Search } from 'lucide-react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { API_BASE_URL } from '../api/config';
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Filter, Search } from "lucide-react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { API_BASE_URL } from "../api/config";
 
 const ServicesPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [selectedPackage, setSelectedPackage] = useState<string>('all');
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedPackage, setSelectedPackage] = useState<string>("all");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [services, setServices] = useState<any[]>([]);
   const [packages, setPackages] = useState<any[]>([]);
   const [packageServices, setPackageServices] = useState<any[]>([]);
@@ -18,23 +18,24 @@ const ServicesPage: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [servicesRes, packagesRes, packageServicesRes] = await Promise.all([
-          axios.get(`${API_BASE_URL}/services`),
-          axios.get(`${API_BASE_URL}/packages`),
-          axios.get(`${API_BASE_URL}/packageServices`)
-        ]);
-        
+        const [servicesRes, packagesRes, packageServicesRes] =
+          await Promise.all([
+            axios.get(`${API_BASE_URL}/services`),
+            axios.get(`${API_BASE_URL}/packages`),
+            axios.get(`${API_BASE_URL}/packageServices`),
+          ]);
+
         setServices(servicesRes.data);
         setPackages(packagesRes.data);
         setPackageServices(packageServicesRes.data);
-        
-        const packageFromUrl = searchParams.get('package');
+
+        const packageFromUrl = searchParams.get("package");
         if (packageFromUrl) {
           setSelectedPackage(packageFromUrl);
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
-        toast.error('Failed to load services');
+        console.error("Error fetching data:", error);
+        toast.error("Failed to load services");
       } finally {
         setLoading(false);
       }
@@ -44,28 +45,33 @@ const ServicesPage: React.FC = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    let filtered = services.filter(service => service.is_active);
-    
-    if (selectedPackage !== 'all') {
+    let filtered = services.filter((service) => service.isActive);
+
+    if (selectedPackage !== "all") {
       const serviceIdsInPackage = packageServices
-        .filter(ps => ps.package_id === selectedPackage)
-        .map(ps => ps.service_id);
-      filtered = filtered.filter(service => serviceIdsInPackage.includes(service.service_id));
-    }
-    
-    if (searchTerm) {
-      filtered = filtered.filter(service => 
-        service.service_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        service.description.toLowerCase().includes(searchTerm.toLowerCase())
+        .filter((ps) => ps.packageId === selectedPackage)
+        .map((ps) => ps.serviceId);
+      filtered = filtered.filter((service) =>
+        serviceIdsInPackage.includes(service.id)
       );
     }
-    
+
+    if (searchTerm) {
+      filtered = filtered.filter(
+        (service) =>
+          service.name
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          service.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
     setFilteredServices(filtered);
   }, [selectedPackage, searchTerm, services, packageServices]);
 
   const handlePackageChange = (packageId: string) => {
     setSelectedPackage(packageId);
-    if (packageId === 'all') {
+    if (packageId === "all") {
       setSearchParams({});
     } else {
       setSearchParams({ package: packageId });
@@ -74,9 +80,9 @@ const ServicesPage: React.FC = () => {
 
   const getServicePackages = (serviceId: string) => {
     const servicePackageIds = packageServices
-      .filter(ps => ps.service_id === serviceId)
-      .map(ps => ps.package_id);
-    return packages.filter(pkg => servicePackageIds.includes(pkg.package_id));
+      .filter((ps) => ps.serviceId === serviceId)
+      .map((ps) => ps.packageId);
+    return packages.filter((pkg) => servicePackageIds.includes(pkg.id));
   };
 
   if (loading) {
@@ -91,33 +97,47 @@ const ServicesPage: React.FC = () => {
   }
 
   const ServiceCardWithPackages: React.FC<{ service: any }> = ({ service }) => {
-    const servicePackages = getServicePackages(service.service_id);
-    
+    const servicePackages = getServicePackages(service.id);
+
     return (
       <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 border border-gray-200">
         <div className="mb-4">
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">{service.service_name}</h3>
-          <p className="text-gray-600 text-sm line-clamp-3">{service.description}</p>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            {service.serviceName}
+          </h3>
+          <p className="text-gray-600 text-sm line-clamp-3">
+            {service.description}
+          </p>
         </div>
-        
+
         <div className="mb-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-600">Price per hour:</span>
-            <span className="text-green-600 font-semibold">${service.base_price_per_hour}</span>
+            <span className="text-sm font-medium text-gray-600">
+              Price per hour:
+            </span>
+            <span className="text-green-600 font-semibold">
+              ${service.basePricePerHour}
+            </span>
           </div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-600">Default duration:</span>
-            <span className="text-gray-900">{service.default_duration_minutes} min</span>
+            <span className="text-sm font-medium text-gray-600">
+              Default duration:
+            </span>
+            <span className="text-gray-900">
+              {service.defaultDurationMinutes} min
+            </span>
           </div>
         </div>
-        
+
         {servicePackages.length > 0 && (
           <div className="mb-4">
-            <span className="text-sm font-medium text-gray-600">Available in packages:</span>
+            <span className="text-sm font-medium text-gray-600">
+              Available in packages:
+            </span>
             <div className="flex flex-wrap gap-1 mt-1">
               {servicePackages.map((pkg) => (
                 <span
-                  key={pkg.package_id}
+                  key={pkg.packageId}
                   className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
                 >
                   {pkg.name}
@@ -147,31 +167,35 @@ const ServicesPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
           <div className="flex items-center space-x-4 mb-4">
             <Filter className="h-5 w-5 text-gray-500" />
-            <h2 className="text-lg font-semibold text-gray-900">Filter Services</h2>
+            <h2 className="text-lg font-semibold text-gray-900">
+              Filter Services
+            </h2>
           </div>
-          
+
           {/* Package Filter */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Package</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Filter by Package
+            </label>
             <div className="flex flex-wrap gap-2">
               <button
-                onClick={() => handlePackageChange('all')}
+                onClick={() => handlePackageChange("all")}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  selectedPackage === 'all'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  selectedPackage === "all"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
                 All Services
               </button>
               {packages.map((pkg) => (
                 <button
-                  key={pkg.package_id}
-                  onClick={() => handlePackageChange(pkg.package_id)}
+                  key={pkg.id}
+                  onClick={() => handlePackageChange(pkg.id)}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    selectedPackage === pkg.package_id
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    selectedPackage === pkg.id
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
                   {pkg.name}
@@ -179,10 +203,12 @@ const ServicesPage: React.FC = () => {
               ))}
             </div>
           </div>
-          
+
           {/* Search Bar */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Search Services</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Search Services
+            </label>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
@@ -199,7 +225,10 @@ const ServicesPage: React.FC = () => {
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredServices.map((service) => (
-            <ServiceCardWithPackages key={service.service_id} service={service} />
+            <ServiceCardWithPackages
+              key={service.id}
+              service={service}
+            />
           ))}
         </div>
 

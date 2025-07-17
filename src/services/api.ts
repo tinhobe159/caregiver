@@ -21,10 +21,10 @@ export const packagesApi = {
 // Package Services
 export const packageServicesApi = {
   getAll: () => api.get('/packageServices'),
-  getByPackageId: (packageId: string) => api.get(`/packageServices?package_id=${packageId}`),
+  getByPackageId: (packageId: string) => api.get(`/packageServices?packageId=${packageId}`),
   create: (data: any) => api.post('/packageServices', data),
-  delete: (packageId: string, serviceId: string) => 
-    api.delete(`/packageServices?package_id=${packageId}&service_id=${serviceId}`),
+  delete: (packageId: string, serviceId: string) =>
+    api.delete(`/packageServices?packageId=${packageId}&serviceId=${serviceId}`),
 };
 
 // Services
@@ -49,7 +49,7 @@ export const customersApi = {
 export const appointmentsApi = {
   getAll: () => api.get('/appointments'),
   getById: (id: string) => api.get(`/appointments/${id}`),
-  getByCustomerId: (customerId: string) => api.get(`/appointments?customer_id=${customerId}`),
+  getByCustomerId: (customerId: string) => api.get(`/appointments?customerId=${customerId}`),
   create: (data: any) => api.post('/appointments', data),
   update: (id: string, data: any) => api.put(`/appointments/${id}`, data),
   delete: (id: string) => api.delete(`/appointments/${id}`),
@@ -74,7 +74,7 @@ export const skillsApi = {
 // Caregiver Availability
 export const availabilityApi = {
   getAll: () => api.get('/caregiverAvailability'),
-  getByCaregiverId: (caregiverId: string) => api.get(`/caregiverAvailability?caregiver_id=${caregiverId}`),
+  getByCaregiverId: (caregiverId: string) => api.get(`/caregiverAvailability?caregiverId=${caregiverId}`),
   create: (data: any) => api.post('/caregiverAvailability', data),
   update: (id: string, data: any) => api.put(`/caregiverAvailability/${id}`, data),
   delete: (id: string) => api.delete(`/caregiverAvailability/${id}`),
@@ -99,7 +99,7 @@ export const carePlansApi = {
 // Care Plan Tasks
 export const carePlanTasksApi = {
   getAll: () => api.get('/carePlanTasks'),
-  getByCarePlanId: (carePlanId: string) => api.get(`/carePlanTasks?care_plan_id=${carePlanId}`),
+  getByCarePlanId: (carePlanId: string) => api.get(`/carePlanTasks?carePlanId=${carePlanId}`),
   create: (data: any) => api.post('/carePlanTasks', data),
   update: (id: string, data: any) => api.put(`/carePlanTasks/${id}`, data),
   delete: (id: string) => api.delete(`/carePlanTasks/${id}`),
@@ -115,7 +115,7 @@ export const evvRecordsApi = {
 // Payments
 export const paymentsApi = {
   getAll: () => api.get('/payments'),
-  getByCustomerId: (customerId: string) => api.get(`/payments?customer_id=${customerId}`),
+  getByCustomerId: (customerId: string) => api.get(`/payments?customerId=${customerId}`),
   create: (data: any) => api.post('/payments', data),
   update: (id: string, data: any) => api.put(`/payments/${id}`, data),
 };
@@ -123,7 +123,7 @@ export const paymentsApi = {
 // Reviews
 export const reviewsApi = {
   getAll: () => api.get('/reviews'),
-  getByCustomerId: (customerId: string) => api.get(`/reviews?customer_id=${customerId}`),
+  getByCustomerId: (customerId: string) => api.get(`/reviews?customerId=${customerId}`),
   create: (data: any) => api.post('/reviews', data),
   update: (id: string, data: any) => api.put(`/reviews/${id}`, data),
   delete: (id: string) => api.delete(`/reviews/${id}`),
